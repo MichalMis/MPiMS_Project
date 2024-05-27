@@ -89,7 +89,7 @@ double RED_RMS = 0;
 double SpO2 = 0;
 double Filtered_SpO2 = 0.0;     //Obliczona wartość saturacji krwii 
 double Alpha_SpO2 = 0.6;        //Współczynnik filtru używanego do obliczenia Saturacji krwii
-double filter_rate = 0.95;      //Filtr dolno-przepustowy dla wartości diod IR/Red aby wyeliminować szumy
+double filter_rate = 0.95;      //Filtr dolno-przepustowy dla wartości diod IR/Red aby wyeliminować szumy     
 int k = 0;                
 int Num = 30;             //Czas próbkowania dla obliczania Saturacji krwii 
 uint32_t IR_SpO2, Red_SpO2;
