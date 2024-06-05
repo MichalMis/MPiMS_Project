@@ -430,11 +430,12 @@ void loop() {
       SpO2_Calc(IR_Value);
     }
     else{
-      previousTime = millis();
+      previousTime = millis();      
       if(previousTime-previousUpdateTime > updateTime){
         previousUpdateTime = previousTime;
         lcd.clear();
-        lcd.print("Put the finger");
+        lcd.print("Put the finger");HeartBeatRate(IR_Value);
+        SpO2_Calc(IR_Value);
         lcd.setCursor(0,1);
         lcd.print("on the sensor");
       }
