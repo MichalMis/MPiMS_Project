@@ -89,7 +89,7 @@ double RED_RMS = 0;
 double SpO2 = 0;
 double Filtered_SpO2 = 0.0;     //Obliczona wartość saturacji krwii 
 double Alpha_SpO2 = 0.6;        //Współczynnik filtru używanego do obliczenia Saturacji krwii
-double filter_rate = 0.95;      //Filtr dolno-przepustowy dla wartości diod IR/Red aby wyeliminować szumy     
+double filter_rate = 0.95;      //Filtr dolno-przepustowy dla wartości diod IR/Red aby wyeliminować szumy   
 int k = 0;                
 int Num = 30;             //Czas próbkowania dla obliczania Saturacji krwii 
 uint32_t IR_SpO2, Red_SpO2;
@@ -116,48 +116,6 @@ Deklaracja zmiennych używanych do pomiaru tempertaury
 double temp = 0;
 
 //////////////////////////////////////////////////////////////////////////
-/*
-Funkcja kalibeująca akcelerometr, z możliwością ustawienia offset-u ręcznie:
-*/
-void Calibrate_ADXL() {
-  float X_avg_buf[100];
-  float Y_avg_buf[100];
-  float Z_avg_buf[100];
-
-  for (int i = 0; i < 100; i++) {
-    Wire.beginTransmission(ADXL345);
-    Wire.write(0x32); // Start with register 0x32 (ACCEL_XOUT_H)
-    Wire.endTransmission(false);
-    Wire.requestFrom((uint8_t)ADXL345, (size_t)2, (bool)true); // Read 6 registers total, each axis value is stored in 2 registers
-    X_avg_buf[i] = (int16_t)(Wire.read() | (Wire.read() << 8)) / 256.0;
-    X_avg += X_avg_buf[i];
-  }
-  X_avg /= 100;
-  delay(100);
-
-  for (int j = 0; j < 100; j++) {
-    Wire.beginTransmission(ADXL345);
-    Wire.write(0x34);
-    Wire.endTransmission(false);
-    Wire.requestFrom((uint8_t)ADXL345, (size_t)2, (bool)true);
-    Y_avg_buf[j] = (int16_t)(Wire.read() | (Wire.read() << 8)) / 256.0;
-    Y_avg += Y_avg_buf[j];
-  }
-  Y_avg /= 100;
-  delay(100);
-
-  for (int k = 0; k < 100; k++) {
-    Wire.beginTransmission(ADXL345);
-    Wire.write(0x36);
-    Wire.endTransmission(false);
-    Wire.requestFrom((uint8_t)ADXL345, (size_t)2, (bool)true);
-    Z_avg_buf[k] = (int16_t)(Wire.read() | (Wire.read() << 8)) / 256.0;
-    Z_avg += Z_avg_buf[k];
-  }
-  Z_avg /= 100;
-  delay(100);
-}
-
 /*
 Funkcja obsługująca przerwania za pomocą przycisku w programie: 
 */
@@ -426,7 +384,6 @@ void setup() {
   Wire.write(8);                    // (8dec -> 0000 1000 binary) Bit D3 Stan wysoki aby aktywować możliwość pomiaru (Dokumentacja) 
   Wire.endTransmission();           // Zakończenia transmisji (dokumentacja)
   delay(10);                        //Opóźnieine 10ms
-  Calibrate_ADXL();                 //Wywołanie funkcji kalibrującej 
   
   // Konfiguracja dla czujnika MAX30102
   Serial.println("Initializing...");                //Wyświetlanie informacji o inicjalizacji Max30105
